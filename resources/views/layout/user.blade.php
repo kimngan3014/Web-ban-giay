@@ -76,7 +76,6 @@
                                 <li><a href="{{ route('women') }}">Women</a></li>
                                 <li><a href="{{ route('about') }}">About</a></li>
                                 <li><a href="{{ route('contact') }}">Contact</a></li>
-                                <li><a href="{{ route('text')}}">Text</a></li>
                                 <li class="cart"><a href="{{ route('cart') }}"><i class="icon-shopping-cart"></i>
                                         Cart
                                         [0]</a></li>
