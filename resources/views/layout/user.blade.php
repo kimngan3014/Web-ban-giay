@@ -67,16 +67,16 @@
                                     <a href="{{ route('men') }}">Men</a>
                                     <ul class="dropdown">
                                         <li><a href="{{ route('product_sp') }}">Product Detail</a></li>
-                                        <li><a href="{{ route('cart') }}">Shopping Cart</a></li>
+                                        <li><a href="{{ route('cart.index') }}">Shopping Cart</a></li>
                                         <li><a href="{{ route('checkout') }}">Checkout</a></li>
-                                        <li><a href="{{ route('order') }}">Order Complete</a></li>
-                                        <li><a href="{{ route('add_to_wishlist') }}">Wishlist</a></li>
+                                        <li><a href="{{ route('order.complete') }}">Order Complete</a></li>
+                                        <li><a href="#">Wishlist</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="{{ route('women') }}">Women</a></li>
                                 <li><a href="{{ route('about') }}">About</a></li>
                                 <li><a href="{{ route('contact') }}">Contact</a></li>
-                                <li class="cart"><a href="{{ route('cart') }}"><i class="icon-shopping-cart"></i>
+                                <li class="cart"><a href="{{ route('cart.index') }}"><i class="icon-shopping-cart"></i>
                                         Cart
                                         [0]</a></li>
                             </ul>

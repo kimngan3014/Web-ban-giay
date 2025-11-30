@@ -8,7 +8,7 @@
             
             <h3 class="font-weight-bold text-center mb-4 text-primary">Upload New Product</h3>
 
-            <form action="{{ route('admin.product.store') }}" method="POST">
+            <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 
                 <div class="mb-3">

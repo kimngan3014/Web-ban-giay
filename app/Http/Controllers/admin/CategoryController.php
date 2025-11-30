@@ -11,23 +11,28 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-    $this->middleware('auth');
-    $categories = Category::orderBy('id', 'desc')->get();
-    view()->share('categories', $categories);
+        $this->middleware('auth');
     }
 
     public function index()
     {
-        $categories = Category::all();
-        return view('admin.category.category-list',compact('categories'));    
+        $categories = Category::orderBy('id', 'desc')->get();
+        return view('admin.category.category-list', compact('categories'));   
     }
 
     public function create()
     {
+        $categories = Category::all();
         return view('admin.category.add');
     }
 
     public function store(Request $request){
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string'
+        ], [
+            'name.required' => 'Bạn chưa nhập tên danh mục!'
+        ]);
         $categories = new Category();
         $categories->name = $request->name;
         $categories->description = $request->description;

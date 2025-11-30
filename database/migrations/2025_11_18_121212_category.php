@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table): void {
-        $table->id();
-        $table->string('name');
-        $table->text('description')->nullable(); // Mô tả
-        $table->timestamps();
+            $table->id();
+            $table->string('name');
+            $table->text('description')->nullable(); // Mô tả
+            $table->timestamps();
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('categories');
     }
 };

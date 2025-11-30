@@ -8,7 +8,7 @@
             
             <h3 class="font-weight-bold text-center mb-4 text-primary">Update Product</h3>
 
-            <form action="{{ route('admin.product.update', $product->id) }}" method="POST">
+            <form action="{{ route('admin.product.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 

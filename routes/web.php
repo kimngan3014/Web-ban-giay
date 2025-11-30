@@ -1,87 +1,82 @@
 <?php
 
-use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\admin\ProductController;
-use App\Http\Controllers\admin\AdminController;
 
+// --- 1. IMPORT CÁC CONTROLLER (Dựa trên ảnh cấu trúc thư mục của bạn) ---
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ShopController;     // Quản lý trang Men/Women
+use App\Http\Controllers\CartController;     // Quản lý Giỏ hàng
+use App\Http\Controllers\CheckoutController; // Quản lý Thanh toán
+
+// --- Admin Controllers ---
+use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\OrderController;   // Quản lý đơn hàng
+use App\Http\Controllers\admin\ProductController as AdminProductController; // Đổi tên để tránh nhầm lẫn
 
 /*
 |--------------------------------------------------------------------------
 | PHẦN 1: KHÁCH HÀNG (FRONT-END)
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    return view('index');
-})->name('home');
 
-Route::get('/product_sp', function () {
-    return view('product_sp');
-})->name('product_sp');
+// Các route xác thực (Login, Register, Logout...)
+Auth::routes();
 
-Route::get('/checkout', function () {
-    return view('checkout');
-})->name('checkout');
+// --- Trang chủ & Các trang tĩnh ---
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [HomeController::class, 'about'])->name('about');     // Khớp với about.blade.php
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact'); // Khớp với contact.blade.php
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
+// --- Sản phẩm & Danh mục ---
+Route::get('/men', [ShopController::class, 'men'])->name('men');     // Khớp với men.blade.php
+Route::get('/women', [ShopController::class, 'women'])->name('women'); // Khớp với women.blade.php
 
-Route::get('/add_to_wishlist', function () {
-    return view('add_to_wishlist');
-})->name('add_to_wishlist');
+// Trang chi tiết sản phẩm (Khớp với product_detail.blade.php)
+Route::get('/product/{id}', [HomeController::class, 'product_detail'])->name('product.detail');
 
-Route::get('/cart', function () {
-    return view('cart');
-})->name('cart');
+// Trang danh sách sản phẩm khác (Khớp với product_sp.blade.php)
+// Bạn cần thêm hàm product_sp vào HomeController nhé
+Route::get('/product-list', [HomeController::class, 'product_sp'])->name('product_sp');
 
-Route::get('/text', function () {
-    return view('text');
-})->name('text');
+// Wishlist (Dự phòng cho add_to_wishlist.blade.php - Chưa có logic thì để redirect)
+Route::get('/wishlist', function() { return redirect('/'); })->name('add_to_wishlist');
 
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
 
-Route::get('/men', function () {
-    return view('men');
-})->name('men');
+// --- Giỏ hàng (Cart) ---
+Route::controller(CartController::class)->prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', 'index')->name('index');          // Xem giỏ hàng
+    Route::post('/add', 'addToCart')->name('add');    // Thêm vào giỏ
+    Route::post('/update', 'update')->name('update'); // Cập nhật số lượng
+    Route::get('/remove/{id}', 'remove')->name('remove'); // Xóa sản phẩm
+});
 
-Route::get('/order', function () {
-    return view('order');
-})->name('order');
-
-Route::get('/women', function () {
-    return view('women');
-})->name('women');
+// --- Thanh toán (Checkout) ---
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout'); // Trang điền thông tin
+Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder'); // Xử lý đơn hàng
+Route::get('/order-complete', [CheckoutController::class, 'complete'])->name('order.complete'); // Trang cảm ơn
 
 
 /*
 |--------------------------------------------------------------------------
-| PHẦN 2: ADMIN (QUẢN TRỊ) - Phải đăng nhập mới vào được
+| PHẦN 2: ADMIN (QUẢN TRỊ) - Yêu cầu đăng nhập
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-// Route::get('/admin', function () {
-//     return view('admin');
-// })->name('admin');
+    
+    // Dashboard (Khớp với admin.blade.php layout chính)
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
-// Route::get('/admin/category/', function () {
-//     return view('admin/category/category-list');
-// })->name('admin.category');
+    // Quản lý Danh mục (Categories)
+    Route::resource('category', CategoryController::class);
 
-// Route::get('/admin/product', function () {
-//     return view('admin/product/product-list');
-// })->name('admin.product');
-
-Route::get('/', [AdminController::class, 'index'])->name('dashboard');
-Route::resource('category', CategoryController::class);
-Route::resource('product', ProductController::class);
+    // Quản lý Sản phẩm (Products)
+    // Lưu ý: Route name sẽ là admin.products.index, admin.products.create...
+    Route::resource('products', AdminProductController::class);
+    
+    // Quản lý Đơn hàng (Orders)
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 });
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-

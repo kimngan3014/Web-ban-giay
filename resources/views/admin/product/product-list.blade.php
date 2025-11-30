@@ -2,13 +2,14 @@
 @section('body')
     <div class="card-footer small text mutter">
         <h3>Product List</h3>
-        <a href="{{ route('admin.product.create')}}" class="btn btn-primary mb-3">Add Product</a>
+        <a href="{{ route('admin.products.create')}}" class="btn btn-primary mb-3">Add Product</a>
         
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Price</th>
                     <th scope="col">Description</th>
                     <th scope="col">Edit</th>

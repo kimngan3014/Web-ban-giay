@@ -117,9 +117,16 @@
 
             
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.product.index') }}">
+                <a class="nav-link" href="{{ route('admin.products.index') }}">
                     <i class="fas fa-fw fa-box-open"></i>
                     <span>Product</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.orders.index') }}">
+                    <i class="fas fa-fw fa-shopping-cart"></i>
+                    <span>Đơn Hàng</span>
                 </a>
             </li>
 
