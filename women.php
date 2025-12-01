@@ -70,7 +70,7 @@ include 'header.php';
         <div class="row row-pb-md">
             <?php
             // Lấy danh sách sản phẩm (Ở đây lấy hết, nếu phân loại thì thêm WHERE)
-            $sql = "SELECT * FROM products ORDER BY id DESC";
+            $sql = "SELECT * FROM products WHERE category = 'Women' ORDER BY id DESC";
             $result = mysqli_query($conn, $sql);
 
             if (mysqli_num_rows($result) > 0) {

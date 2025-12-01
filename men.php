@@ -40,8 +40,7 @@ include 'header.php';
             <?php
             // Lấy tất cả sản phẩm (Có thể thêm WHERE category_id = 1 nếu bạn phân loại Nam/Nữ)
             // Hiện tại mình lấy hết để demo cho nhiều
-            $sql = "SELECT * FROM products ORDER BY id DESC";
-            $result = mysqli_query($conn, $sql);
+            $sql = "SELECT * FROM products WHERE category = 'Men' ORDER BY id DESC";            $result = mysqli_query($conn, $sql);
 
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
