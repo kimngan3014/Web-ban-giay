@@ -35,9 +35,16 @@
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="css/style.css">
 
+	<?php
+// Tính tổng số lượng sản phẩm trong giỏ
+$total_qty = 0;
+if (isset($_SESSION['cart'])) {
+    // array_sum sẽ cộng hết các số lượng lại (Ví dụ: Giày A mua 2, Giày B mua 1 => Tổng = 3)
+    $total_qty = array_sum($_SESSION['cart']);
+}
+?>
 	</head>
 	<body>
-		
 
 	<div id="page">
 		<nav class="colorlib-nav" role="navigation">
@@ -48,12 +55,12 @@
 							<div id="colorlib-logo"><a href="index.php">Footwear</a></div>
 						</div>
 						<div class="col-sm-5 col-md-3">
-			            <form action="#" class="search-wrap">
-			               <div class="form-group">
-			                  <input type="search" class="form-control search" placeholder="Search">
-			                  <button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
-			               </div>
-			            </form>
+			            <form action="index.php" method="GET" class="search-wrap">
+   							<div class="form-group">
+      							<input type="search" name="keyword" class="form-control search" placeholder="Tìm kiếm sản phẩm..." value="<?php echo isset($_GET['keyword']) ? $_GET['keyword'] : ''; ?>">
+      							<button class="btn btn-primary submit-search text-center" type="submit"><i class="icon-search"></i></button>
+   							</div>
+						</form>
 			         </div>
 		         </div>
 					<div class="row">
@@ -72,8 +79,11 @@
     <li><a href="women.php">Women</a></li>
     <li><a href="about.php">About</a></li>
     <li><a href="contact.php">Contact</a></li>
-    <li class="cart"><a href="cart.php"><i class="icon-shopping-cart"></i> Cart [0]</a></li>
-
+<li class="cart">
+    <a href="cart.php">
+        <i class="icon-shopping-cart"></i> Cart [<?php echo $total_qty; ?>]
+    </a>
+</li>
 <?php if (isset($_SESSION['user_name'])): ?>
             <li class="has-dropdown">
                 <a href="#" style="color: #FF5722; font-weight: bold;">Chào, <?php echo $_SESSION['user_name']; ?></a>

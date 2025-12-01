@@ -95,33 +95,57 @@ if (isset($_POST['btn_submit'])) {
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="cart-detail">
-    					<h2>Tổng đơn hàng</h2>
-    				<ul>
-        			<li>
-            			<span>Tạm tính</span> 
-            			<span>(Đã bao gồm VAT)</span>
-        			</li>
-        			<li><span>Phí ship</span> <span>0 đ</span></li>
-        			<li><span><strong>Tổng cộng</strong></span> <span><strong>Thanh toán sau</strong></span></li>
-    				</ul>
+    <div class="cart-detail">
+        <h2>Tổng đơn hàng</h2>
+        
+        <?php
+        $display_total = 0;
+        // Lấy dữ liệu từ giỏ hàng để tính toán
+        if(isset($_SESSION['cart']) && count($_SESSION['cart']) > 0){
+            $ids = implode(",", array_keys($_SESSION['cart']));
+            $sql_display = "SELECT * FROM products WHERE id IN ($ids)";
+            $res_display = mysqli_query($conn, $sql_display);
+            while($r = mysqli_fetch_assoc($res_display)){
+                $display_total += $r['price'] * $_SESSION['cart'][$r['id']];
+            }
+        }
+        ?>
+        <ul>
+            <li>
+                <span>Tạm tính</span> 
+                <span><?php echo number_format($display_total); ?> đ</span>
+            </li>
+            <li>
+                <span>Phí ship</span> 
+                <span>0 đ</span> </li>
+            <li>
+                <span><strong>Tổng cộng</strong></span> 
+                <span style="font-size: 18px; color: red; white-space: nowrap;">
+                    <strong><?php echo number_format($display_total); ?> VNĐ</strong>
+                </span>            
+            </li>
+        </ul>
 
-    			<div class="form-group mt-4">
-        			<label>Chọn hình thức thanh toán:</label>
-        			<div class="radio">
-           			<label><input type="radio" name="payment_method" value="COD" checked> Thanh toán khi nhận hàng (COD)</label>
-        		</div>
-        				<div class="radio">
-          					<label><input type="radio" name="payment_method" value="BANK"> Chuyển khoản ngân hàng (QR Code)</label>
-        				</div>
-    				</div>
-				</div>	
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <button type="submit" name="btn_submit" class="btn btn-primary btn-lg btn-block">ĐẶT HÀNG NGAY</button>
-                        </div>
-                    </div>
-                </div>
+        <hr>
+
+        <div class="form-group mt-4">
+            <label style="font-weight: bold;">Hình thức thanh toán:</label>
+            <div class="radio">
+               <label><input type="radio" name="payment_method" value="COD" checked> Thanh toán khi nhận (COD)</label>
+            </div>
+            <div class="radio">
+               <label><input type="radio" name="payment_method" value="BANK"> Chuyển khoản (QR Code)</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <br>
+            <button type="submit" name="btn_submit" class="btn btn-primary btn-lg btn-block">ĐẶT HÀNG NGAY</button>
+        </div>
+    </div>
+</div>
             </div>
         </form>
     </div>

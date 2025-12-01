@@ -18,6 +18,23 @@ if (!$product) {
 }
 ?>
 
+<style>
+    /* Ép ảnh sản phẩm không được cao quá 500px */
+    .product-entry .prod-img img {
+        width: 100%;
+        max-height: 500px !important;
+        object-fit: contain !important;
+        background-color: #f8f9fa;
+    }
+    
+    /* Style cho ô Size khi được chọn (Active) */
+    .product-desc .size-wrap .block-26 ul li.active a {
+        background: #000 !important; /* Màu nền đen */
+        color: #fff !important;      /* Chữ trắng */
+        border-color: #000 !important;
+    }
+</style>
+
 <div class="breadcrumbs">
     <div class="container">
         <div class="row">
@@ -32,21 +49,23 @@ if (!$product) {
     <div class="container">
         <div class="row row-pb-lg product-detail-wrap">
             <div class="col-sm-8">
-                <div class="owl-carousel">
-                    <div class="item">
-                        <div class="product-entry border">
-                            <a href="#" class="prod-img">
-                                <img src="uploads/<?php echo $product['image']; ?>" class="img-fluid" alt="<?php echo $product['name']; ?>">
-                            </a>
-                        </div>
-                    </div>
+                <div class="product-entry border">
+                    <a href="#" class="prod-img">
+                        <?php 
+                            $img_path = "uploads/" . $product['image'];
+                            if(!empty($product['image']) && file_exists($img_path)) {
+                                echo '<img src="'.$img_path.'" class="img-fluid" alt="'.$product['name'].'">';
+                            } else {
+                                echo '<img src="images/item-1.jpg" class="img-fluid" alt="Ảnh lỗi">';
+                            }
+                        ?>
+                    </a>
                 </div>
             </div>
             
             <div class="col-sm-4">
                 <div class="product-desc">
                     <h3><?php echo $product['name']; ?></h3>
-                    
                     <p class="price">
                         <span><?php echo number_format($product['price']); ?> VNĐ</span> 
                         <span class="rate">
@@ -58,7 +77,6 @@ if (!$product) {
                             (74 Rating)
                         </span>
                     </p>
-                    
                     <p><?php echo nl2br($product['description']); ?></p>
                     
                     <div class="size-wrap">
@@ -123,3 +141,22 @@ if (!$product) {
 </div>
 
 <?php include 'footer.php'; ?>
+
+<script>
+    $(document).ready(function(){
+        // Xử lý chọn Size
+        $(".block-26 ul li").click(function(e){
+            e.preventDefault(); // Ngăn thẻ a chuyển trang
+            
+            // 1. Xóa class 'active' ở tất cả các ô size khác
+            $(".block-26 ul li").removeClass("active");
+            
+            // 2. Thêm class 'active' vào ô (thẻ li) vừa bấm
+            $(this).addClass("active");
+            
+            // (Tùy chọn) Lấy giá trị size để in ra console kiểm tra
+            var selectedSize = $(this).find('a').text();
+            console.log("Đã chọn size: " + selectedSize);
+        });
+    });
+</script>

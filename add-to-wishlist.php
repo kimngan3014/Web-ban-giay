@@ -2,7 +2,7 @@
 include 'db.php'; 
 include 'header.php'; 
 ?>
-<style>
+<!-- <style>
     /* Chỉnh hàng tiêu đề */
     .product-name span {
         font-size: 16px !important;   /* Cỡ chữ to hơn */
@@ -16,7 +16,7 @@ include 'header.php';
         font-size: 18px !important;
         font-weight: bold;
     }
-</style>
+</style> -->
 
 <div class="breadcrumbs">
     <div class="container">
@@ -42,7 +42,7 @@ include 'header.php';
                             <div class="one-eight text-center">
                                 <span>Tình trạng</span>
                             </div>
-                            <div class="one-fourth text-center px-4">
+                            <div class="one-eight text-center px-2">
                                 <span>Thêm vào giỏ</span>
                             </div>
                         </div>
