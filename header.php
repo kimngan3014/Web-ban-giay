@@ -85,15 +85,15 @@ if (isset($_SESSION['cart'])) {
     </a>
 </li>
 <?php if (isset($_SESSION['user_name'])): ?>
-            <li class="has-dropdown">
+            <li class="has-dropdown" style="position: relative;">
                 <a href="#" style="color: #FF5722; font-weight: bold;">Chào, <?php echo $_SESSION['user_name']; ?></a>
-                	<ul class="dropdown"> 
+                	<ul class="dropdown" style="width: 180px;"> 
 						<?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1): ?>
                         <li>
-                            <a href="admin_orders.php" style="color: red; font-weight: bold;">★ QUẢN LÝ ĐƠN</a>
+                            <a href="admin_orders.php" >QUẢN LÝ ĐƠN</a>
                         </li>
                         <li>
-                            <a href="admin_products.php" style="color: blue; font-weight: bold;">📦 QUẢN LÝ KHO</a>
+                            <a href="admin_products.php" >QUẢN LÝ KHO</a>
                         </li>
                         <hr> <?php endif; ?>
                     

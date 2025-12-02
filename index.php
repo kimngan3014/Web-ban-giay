@@ -74,16 +74,19 @@ include 'header.php';
         
         <div class="row row-pb-md">
             <?php
-            // 1. CHUẨN BỊ SQL
-            $sql = "SELECT * FROM products";
-
-            // Xử lý tìm kiếm
+           $sql = "SELECT * FROM products";
             if (isset($_GET['keyword']) && !empty($_GET['keyword'])) {
-                $keyword = $_GET['keyword'];
-                $sql .= " WHERE name LIKE '%$keyword%'";
+                $keyword = mysqli_real_escape_string($conn, $_GET['keyword']);
+                $sql .= " WHERE name LIKE '%$keyword%' ORDER BY id DESC";
+            }
+            elseif (isset($_GET['viewall'])) {
+                $sql .= " ORDER BY id DESC";                    // hiện hết
+            }
+            // chỉ hiện 8 sản phẩm
+            else {
+                $sql .= " ORDER BY id DESC LIMIT 8";
             }
 
-            $sql .= " ORDER BY id DESC";
             $result = mysqli_query($conn, $sql);
 
             // --- TÍNH NĂNG THÔNG MINH: TÌM 1 RA 1 THÌ CHUYỂN LUÔN ---
@@ -119,9 +122,14 @@ include 'header.php';
                 echo "<div class='col-12 text-center'><p>Không tìm thấy sản phẩm nào.</p></div>";
             }
             ?>
-        </div> <div class="row">
+        <div class="row">
             <div class="col-md-12 text-center">
-                <p><a href="men.php" class="btn btn-primary btn-lg">Xem tất cả sản phẩm</a></p>
+                <?php if(isset($_GET['viewall']) || (isset($_GET['keyword']) && !empty($_GET['keyword']))): ?>
+                <?php else: ?>
+                    <a href="?viewall=1" class="btn btn-primary btn-lg" style="background:#333; color:#fff; padding:15px 50px; border-radius:50px; text-decoration:none;">
+                        Xem tất cả sản phẩm
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </div> </div> <div class="colorlib-partner">
